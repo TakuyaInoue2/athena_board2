@@ -16,13 +16,13 @@
 
 <div class="flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
 
-   <h5 >投稿一覧</h5>
+   <h5 >新規投稿</h5>
     <ul class="nav justify-content-end ">
   <li class="nav-item">
     <a class="nav-link active text-dark" href="index.php">会員登録</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link text-dark" href="comment.php">掲示板</a>
+    <a class="nav-link text-dark" href="all.php">掲示板</a>
   </li>
   <li class="nav-item">
     <a class="btn btn-outline-primary" href="comment.php">ログイン</a>
@@ -57,6 +57,9 @@
   </body>
 </html>
 
+
+
+
 <?php
 
 $link= mysqli_connect("localhost","root","root","keijiban");
@@ -82,35 +85,20 @@ if(array_key_exists('username',$_POST) OR array_key_exists('comment',$_POST)){
     echo "コメントを入力してください";
   } else{
 
-    $query = "SELECT `id` FROM `comment` WHERE username='".mysqli_real_escape_string($link,$_POST['comment'])."'";
+    $query = "SELECT `id` FROM `comment` WHERE username='".mysqli_real_escape_string($link,$_POST['username'])."'";
     $result= mysqli_query($link,$query);
-
-    if(mysqli_num_rows($result)  > 0){
-
-
-    echo "";
-  }else{
-
     $query = "SET GLOBAL sql_mode=NO_ENGINE_SUBSTITUTION";
 
     mysqli_query($link,$query);
 $query="INSERT INTO `comment`(`username`,`comment`) VALUES ('".mysqli_real_escape_string($link,$_POST['username'])."','".mysqli_real_escape_string($link,$_POST['comment'])."')";
 if(mysqli_query($link,$query)){
 
-// echo "登録されました";
+echo "投稿しました";
 }else{
 
-// echo "登録に失敗しました！";
+echo "投稿に失敗しました！";
 }
-
   }
-
-
-  }
-
-}
-
-// $query="SELECT * FROM keijiban  WHERE name = ' ".mysqli_real_escape_string($link,$name)."'";
-
-
-?>
+  }?>
+  
+ 

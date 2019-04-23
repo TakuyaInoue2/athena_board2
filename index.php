@@ -19,13 +19,13 @@
    <h5 >掲示板サイト</h5>
     <ul class="nav justify-content-end ">
   <li class="nav-item">
-    <a class="nav-link active text-dark" href="#">会員登録</a>
+    <a class="nav-link active text-dark" href="index.php">会員登録</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link text-dark" href="#">掲示板</a>
+    <a class="nav-link text-dark" href="all.php">掲示板</a>
   </li>
   <li class="nav-item">
-    <a class="btn btn-outline-primary" href="#">ログイン</a>
+    <a class="btn btn-outline-primary" href="comment.php">ログイン</a>
   </li>
     </ul>
   </div>
@@ -34,11 +34,6 @@
 <div class="container">
 
           <form method="post">
-        <div class="form-group">
-          <label for="form-username">ユーザー名</label>
-          <input type="username" class="form-control" id="Username" aria-describedby="emailHelp" placeholder="田中太郎">
-          <small id="emailHelp" class="form-text text-muted"></small>
-        </div>
         <div class="form-group">
           <label for="form-mail">メールアドレス</label>
           <input type="mail" class="form-control" name="email" placeholder="example@-----">
@@ -67,10 +62,15 @@
 
 $link= mysqli_connect("localhost","root","root","keijiban");
 
+
+
+
+
 if(mysqli_connect_error()){
 
-  die( "エラーです！");
+  die( "errorはありません");
 }
+
 if(array_key_exists('email',$_POST) OR array_key_exists('password',$_POST)){
 
   // print_r($_POST);
@@ -83,7 +83,7 @@ if(array_key_exists('email',$_POST) OR array_key_exists('password',$_POST)){
     echo "パスワードを入力してください";
   } else{
 
-    $query = "SELECT `id` FROM `keijiban` WHERE email='".mysqli_real_escape_string($link,$_POST['email']). "'";
+    $query = "SELECT `id` FROM `keijiban` WHERE email='".mysqli_real_escape_string($link,$_POST['email'])."'";
     $result= mysqli_query($link,$query);
 
     if(mysqli_num_rows($result)  > 0){
@@ -110,6 +110,8 @@ echo "登録に失敗しました！";
   }
 
 }
+
+// $query="SELECT * FROM keijiban  WHERE name = ' ".mysqli_real_escape_string($link,$name)."'";
 
 
 ?>
