@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * このアプリケーションの中で全体的に使われるパラメータ
+ * @return array
+ */
+function getConfig() {
+    return [
+        'mysql' => [
+            'username' => 'username',
+            'password' => 'password',
+            'dbname' => 'dbname',
+            'host' => 'localhost'
+        ]
+    ];
+}
