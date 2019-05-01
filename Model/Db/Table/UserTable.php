@@ -17,8 +17,9 @@ class UserTable extends TableBase
     }
 
     /**
-     * @param $email
-     * @param $password
+     * メアドとパスワードを指定してユーザーを作成する
+     * @param string $email SQLインジェクション対策を内部的に行っているので、平文で指定してください
+     * @param string $password 内部的に暗号化を行っているので、平文で指定してください
      * @return bool
      */
     public function insert($email, $password) {

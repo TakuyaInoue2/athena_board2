@@ -35,7 +35,6 @@ class TableBase
      */
     protected function _prepareInsert($table, $param) {
         $sql = 'insert into' . ' ' . $table . $param;
-        var_dump($sql);
         return $this->_pdo->prepare($sql);
     }
 }
