@@ -19,13 +19,10 @@
    <h5 >掲示板サイト</h5>
     <ul class="nav justify-content-end ">
   <li class="nav-item">
-    <a class="nav-link active text-dark" href="index.php">会員登録</a>
-  </li>
-  <li class="nav-item">
     <a class="nav-link text-dark" href="all.php">掲示板</a>
   </li>
   <li class="nav-item">
-    <a class="btn btn-outline-primary" href="comment.php">ログイン</a>
+    <a class="btn btn-outline-primary" href="admin.php">ログイン</a>
   </li>
     </ul>
   </div>
@@ -62,7 +59,7 @@
 
 $link= mysqli_connect("localhost","root","root","keijiban");
 
-
+date_default_timezone_set('Asia/Tokyo');
 
 
 
@@ -77,10 +74,20 @@ if(array_key_exists('email',$_POST) OR array_key_exists('password',$_POST)){
 
   if($_POST['email'] == ''){
 
-    echo "Eメールアドレスを入力してください";
+    ?>
+    <div class="alert alert-danger" role="alert">
+    <?php   echo "Eメールアドレスを入力してください"; ?>
+  </div>
+  
+  <?php
+   
   }elseif($_POST['password'] == ''){
-
-    echo "パスワードを入力してください";
+    ?>
+    <div class="alert alert-danger" role="alert">
+    <?php   echo "パスワードを入力してください"; ?>
+  </div>
+  
+  <?php
   } else{
 
     $query = "SELECT `id` FROM `keijiban` WHERE email='".mysqli_real_escape_string($link,$_POST['email'])."'";
@@ -88,8 +95,12 @@ if(array_key_exists('email',$_POST) OR array_key_exists('password',$_POST)){
 
     if(mysqli_num_rows($result)  > 0){
 
+      ?>
+      <div class="alert alert-danger" role="alert">
+      <?php  echo "すでにそのメールアドレスは使用されています。"; ?>
+    </div>
 
-    echo "すでにそのメールアドレスは使用されています。";
+    <?php
   }else{
 
     $query = "SET GLOBAL sql_mode=NO_ENGINE_SUBSTITUTION";
@@ -98,10 +109,22 @@ if(array_key_exists('email',$_POST) OR array_key_exists('password',$_POST)){
 $query="INSERT INTO `keijiban`(`email`,`password`) VALUES ('".mysqli_real_escape_string($link,$_POST['email'])."','".mysqli_real_escape_string($link,$_POST['password'])."')";
 if(mysqli_query($link,$query)){
 
-echo "登録されました";
+  ?>
+  <div class="alert alert-danger" role="alert">
+  <?php  echo "登録されました"; ?>
+</div>
+
+<?php
+
 }else{
 
-echo "登録に失敗しました！";
+  ?>
+  <div class="alert alert-danger" role="alert">
+  <?php  echo "登録に失敗しました！"; ?>
+</div>
+
+<?php
+
 }
 
   }

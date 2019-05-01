@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>投稿</title>
+    <title>てりー掲示板</title>
 
   </head>
   <body>
@@ -16,14 +16,16 @@
 
 <div class="flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
 
-<h3>てりー掲示板</h3>
+   <h5 >掲示板サイト</h5>
     <ul class="nav justify-content-end ">
-
+  <li class="nav-item">
+    <a class="nav-link active text-dark" href="index.php">会員登録</a>
+  </li>
   <li class="nav-item">
     <a class="nav-link text-dark" href="all.php">掲示板</a>
   </li>
   <li class="nav-item">
-    <a class="btn btn-outline-primary" href="admin.php">ログイン</a>
+    <a class="btn btn-outline-primary" href="comment.php">ログイン</a>
   </li>
     </ul>
   </div>
@@ -33,14 +35,14 @@
 
           <form method="post">
         <div class="form-group">
-          <label for="form-mail">ユーザー名</label>
-          <input type="username" class="form-control" name="username" placeholder="てりー">
+          <label for="form-mail">メールアドレス</label>
+          <input type="mail" class="form-control" name="email" placeholder="example@-----">
         </div>
         <div class="form-group">
-          <label for="exampleInputComment">コメント</label>
-          <input type="comment" class="form-control" name="comment" placeholder="自由に投稿！">
+          <label for="exampleInputComment">パスワード</label>
+          <input type="password" class="form-control" name="password" placeholder="8文字以上16文字以内">
         </div>
-        <button type="submit" class="btn btn-primary">投稿</button>
+        <button type="submit" class="btn btn-primary">新規登録</button>
       </form>
 
 </div>
@@ -56,8 +58,6 @@
 </html>
 
 
-
-
 <?php
 
 $link= mysqli_connect("localhost","root","root","keijiban");
@@ -65,85 +65,53 @@ $link= mysqli_connect("localhost","root","root","keijiban");
 date_default_timezone_set('Asia/Tokyo');
 
 
-session_start();
+
 if(mysqli_connect_error()){
 
   die( "errorはありません");
 }
 
-if(array_key_exists('username',$_POST) OR array_key_exists('comment',$_POST)){
+if(array_key_exists('email',$_POST) OR array_key_exists('password',$_POST)){
 
   // print_r($_POST);
 
-  if($_POST['username'] == ''){
+  if($_POST['email'] == ''){
 
-    ?>
+    echo "Eメールアドレスを入力してください";
+  }elseif($_POST['password'] == ''){
 
-  <br>
-<br>
-<div class="container">
-  <div class="alert alert-danger" role="alert">
-  <?php  echo "ユーザー名を入力してください"; 
-
-  // セッションに表示名を保存
-		$_SESSION['username'] = $clean['username'];?>
-</div>
-</div>
-
-<?php
-   
-  }elseif($_POST['comment'] == ''){
-  ?>
-
-  <br>
-<br>
-<div class="container">
-  <div class="alert alert-danger" role="alert">
-  <?php  echo "コメントを入力してください"; ?>
-</div>
-</div>
-
-<?php
-    
+    echo "パスワードを入力してください";
   } else{
 
-    $query = "SELECT `id` FROM `comment` WHERE username='".mysqli_real_escape_string($link,$_POST['username'])."'";
+    $query = "SELECT `id` FROM `keijiban` WHERE email='".mysqli_real_escape_string($link,$_POST['email'])."'";
     $result= mysqli_query($link,$query);
+
+    if(mysqli_num_rows($result)  > 0){
+
+
+    echo "すでにそのメールアドレスは使用されています。";
+  }else{
+
     $query = "SET GLOBAL sql_mode=NO_ENGINE_SUBSTITUTION";
 
     mysqli_query($link,$query);
-$query="INSERT INTO `comment`(`username`,`comment`) VALUES ('".mysqli_real_escape_string($link,$_POST['username'])."','".mysqli_real_escape_string($link,$_POST['comment'])."')";
+$query="INSERT INTO `keijiban`(`email`,`password`) VALUES ('".mysqli_real_escape_string($link,$_POST['email'])."','".mysqli_real_escape_string($link,$_POST['password'])."')";
 if(mysqli_query($link,$query)){
 
-  $now_date = date("Y-m-d H:i:s");
-  $data = "'".$now_date."'\n";
-  
-?>
-<br>
-<br>
-<div class="container">
-  <div class="alert alert-success" role="alert">
-  <?php echo "投稿しました"; ?>
-</div>
-</div>
-
-<?php
-
+echo "登録されました";
 }else{
-  ?>
 
-  <br>
-<br>
-<div class="container">
-  <div class="alert alert-danger" role="alert">
-  <?php echo "投稿に失敗しました！"; ?>
-</div>
-</div>
+echo "登録に失敗しました！";
+}
 
-<?php
+  }
+
+
+  }
 
 }
-  }
-  }?>
-  
- 
+
+// $query="SELECT * FROM keijiban  WHERE name = ' ".mysqli_real_escape_string($link,$name)."'";
+
+
+?>

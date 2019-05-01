@@ -16,16 +16,16 @@
 
 <div class="flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
 
-   <h5 >投稿一覧</h5>
+
+    <h3><a class="nav-item text-dark" href="all.php">てりー掲示板</a></h3>
+  
     <ul class="nav justify-content-end ">
-  <li class="nav-item">
-    <a class="nav-link active text-dark" href="index.php">会員登録</a>
-  </li>
+  
   <li class="nav-item">
     <a class="nav-link text-dark" href="all.php">掲示板</a>
   </li>
   <li class="nav-item">
-    <a class="btn btn-outline-primary" href="comment.php">ログイン</a>
+    <a class="btn btn-outline-primary" href="admin.php">ログイン</a>
   </li>
     </ul>
   </div>
@@ -33,33 +33,38 @@
 
 
 <?php
+
+
    $mysqli = new mysqli( "localhost","root","root","keijiban");
 
+   date_default_timezone_set('Asia/Tokyo');
 $sql = 'SELECT * FROM comment';
 $res = $mysqli->query($sql);
 $arrayData = $res->fetch_all(MYSQLI_ASSOC);
  ?>
 
+
+
+<?php if( !empty($arrayData) ): ?>
+<?php foreach( $arrayData as $value ): ?>
 <br>
+<article>
 <div class="container">
-
-<tr　>
-    <th>ID</th>
-    <th>ユーザーネーム</th>
-    <th>コメント</th>
-</tr>
-<tr>
-
+<div class="card">
+  <div class="card-body">
+   
+ 
+  <?php echo $value['username']; ?>
+        <time><?php echo date('Y年m月d日 H:i', strtotime($value['time'])); ?></time>
+       
+    <p><?php echo nl2br($value['comment']); ?></p>
+    
+</article>
+</article>
+</div>
+</div>
+    
 <div>
-
-<?php
-for($i = 0; $i < count($arrayData); $i++) { ?>
-<br>
-<tr>
-    <td><?php echo $arrayData[$i]['id']; ?></td>
-    <td><?php echo $arrayData[$i]['username']; ?></td>
-    <td><?php echo $arrayData[$i]['comment']; ?></td>
-</tr>
-
-
-<?php } ?>
+</div>
+<?php endforeach; ?>
+<?php endif; ?>
